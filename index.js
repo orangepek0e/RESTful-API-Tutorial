@@ -1,12 +1,36 @@
 var express = require('express');
+var bodyParser = require('body-parser');
+
 var app = express();
+app.use(bodyParser.json({ type: 'application/json'}));
 
 // We create the router object for our users resource
 var user = express.Router();
 // A GET to the root of a resource should return a list of objects
 user.get('/', function(req, res) { });
 // A POST to the root of a resource should create a new object
-user.post('/', function(req, res) { });
+user.post('/', function(req, res) {
+    // We want to create a record object to store using
+    // the inbound data from our POST body
+    var userData = {
+        username: req.body.username,
+        profile_name: req.body.profile_name,
+        email: req.body.email
+    };
+    // We retrieve a reference to the collection we'll insert into
+    var collection = mongo.db.collection('users');
+    // Then we insert one document into the collections
+    collection.insertOne(userData, function(err, result) {
+        if (err) {
+            console.error(err);
+            res.statusCode = 500;
+            res.json({ errors: ['Could not create user'] });
+        }
+        // The HTTP status code 201 indicates a record was created
+        res.statusCode = 201;
+        res.send(userData);
+    });
+});
 
 function lookupUser(req, res, next) {
     // We access the ID param on the request object
