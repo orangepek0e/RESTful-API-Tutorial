@@ -1,0 +1,23 @@
+#!/usr/bin/env node
+
+var app = require('../index');
+var mongo = require('../lib/mongo');
+
+// Your database configuration
+var DATABASE_URL = 'mongodb://localhost:27017/api'
+
+// Connect to mysql database
+mongo.initialize(DATABASE_URL, function(err) {
+  if (err) {
+    throw err;
+  }
+
+  // Which port to listen on
+  app.set('port', process.env.PORT || 3000);
+
+  // Start listening for HTTP requests
+  var server = app.listen(app.get('port'), function() {
+    var port = server.address().port;
+    console.log('Example app listening at http://localhost:%s', port);
+  });
+});
