@@ -1,6 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 
+var mongo = require('./lib/mongo');
 var app = express();
 app.use(bodyParser.json({ type: 'application/json'}));
 
