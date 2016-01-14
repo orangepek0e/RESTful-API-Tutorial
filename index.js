@@ -8,8 +8,9 @@ app.use(bodyParser.json({ type: 'application/json'}));
 // We create the router object for our users resource
 var user = express.Router();
 // A GET to the root of a resource should return a list of objects
-user.get('/', function(req, res) { });
-// A POST to the root of a resource should create a new object
+user.get('/:username', lookupUser, function(req, res) {
+    res.json(req.user);
+});
 user.post('/', function(req, res) {
     // We want to create a record object to store using
     // the inbound data from our POST body
